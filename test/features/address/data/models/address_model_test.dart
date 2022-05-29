@@ -3,7 +3,7 @@ import 'package:addresscrud_clean_architecture/features/address/data/models/addr
 import 'package:addresscrud_clean_architecture/features/address/domain/entities/address.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../fixtures/fixture.reader.dart';
+import '../../../../fixtures/fixture.reader.dart';
 
 void main() {
   List<AddressModel> addressList = [
@@ -34,7 +34,7 @@ void main() {
       longitude: 31.378499999999998948396751075051724910736083984375);
 
   test('should be a subclass of entity', () {
-    expect(addressList, isA<AddressEntity>());
+    expect(addressModel, isA<AddressEntity>());
   });
 
   test('should return a valid json model', () {
