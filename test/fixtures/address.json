@@ -1,0 +1,23 @@
+{
+  "Status Code": 200,
+  "Addresses": [
+    {
+      "id": 4,
+      "address_name": "Masr Al Jadidah, Al Matar, El Nozha, Egypt",
+      "building_no": "55",
+      "floor_no": 5,
+      "door_no": 5,
+      "latitude": 30.112314999999998832436176599003374576568603515625,
+      "longitude": 31.343850700000000841782821225933730602264404296875
+    },
+    {
+      "id": 7,
+      "address_name": "haram street",
+      "building_no": "2A",
+      "floor_no": 3,
+      "door_no": 10,
+      "latitude": 31.04090000000000060254023992456495761871337890625,
+      "longitude": 31.378499999999998948396751075051724910736083984375
+    }
+  ]
+}
