@@ -1,6 +1,6 @@
 import 'package:addresscrud_clean_architecture/core/error/failures.dart';
 import 'package:addresscrud_clean_architecture/core/usecases/usecase.dart';
-import 'package:addresscrud_clean_architecture/features/address/domain/entities/address.dart';
+import 'package:addresscrud_clean_architecture/features/address/data/models/address_model.dart';
 import 'package:addresscrud_clean_architecture/features/address/domain/repositories/address_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -13,15 +13,15 @@ class UpdateAddress extends UseCase<Unit, UpdateAddressUseCaseParams> {
   @override
   Future<Either<Failure, Unit>> call(
       UpdateAddressUseCaseParams parameters) async {
-    return await addressRepository.updateAddress(parameters.addressEntity);
+    return await addressRepository.updateAddress(parameters.addressModel);
   }
 }
 
 class UpdateAddressUseCaseParams extends Equatable {
-  final AddressEntity addressEntity;
+  final AddressModel addressModel;
 
-  const UpdateAddressUseCaseParams({required this.addressEntity});
+  const UpdateAddressUseCaseParams({required this.addressModel});
 
   @override
-  List<Object?> get props => [addressEntity];
+  List<Object?> get props => [addressModel];
 }

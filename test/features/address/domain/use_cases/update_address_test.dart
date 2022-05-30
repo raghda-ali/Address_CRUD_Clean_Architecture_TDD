@@ -1,4 +1,4 @@
-import 'package:addresscrud_clean_architecture/features/address/domain/entities/address.dart';
+import 'package:addresscrud_clean_architecture/features/address/data/models/address_model.dart';
 import 'package:addresscrud_clean_architecture/features/address/domain/repositories/address_repository.dart';
 import 'package:addresscrud_clean_architecture/features/address/domain/use_cases/update_address.dart';
 import 'package:dartz/dartz.dart';
@@ -15,7 +15,7 @@ void main() {
     updateAddressUseCase =
         UpdateAddress(addressRepository: mockAddressRepository);
   });
-  const address = AddressEntity(
+  final address = AddressModel(
       id: 1,
       addressName: "Masr Al Jadidah, Al Matar, El Nozha, Egypt",
       buildingNumber: "55",
@@ -29,7 +29,7 @@ void main() {
         .thenAnswer((_) async => const Right(unit));
     //act
     final result = await updateAddressUseCase
-        .call(const UpdateAddressUseCaseParams(addressEntity: address));
+        .call(UpdateAddressUseCaseParams(addressModel: address));
     expect(result, const Right(unit));
     print(result);
     print(Right(unit));

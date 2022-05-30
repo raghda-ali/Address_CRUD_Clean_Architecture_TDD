@@ -2,6 +2,7 @@ import 'package:addresscrud_clean_architecture/core/error/exceptions.dart';
 import 'package:addresscrud_clean_architecture/core/error/failures.dart';
 import 'package:addresscrud_clean_architecture/core/platform/network_info.dart';
 import 'package:addresscrud_clean_architecture/features/address/data/data_sources/address_remote_data_source.dart';
+import 'package:addresscrud_clean_architecture/features/address/data/models/address_model.dart';
 import 'package:addresscrud_clean_architecture/features/address/data/repositories/address_impl.dart';
 import 'package:addresscrud_clean_architecture/features/address/domain/entities/address.dart';
 import 'package:dartz/dartz.dart';
@@ -25,8 +26,8 @@ void main() {
         networkInfo: mockNetworkInfo);
   });
   int id = 1;
-  List<AddressEntity> addressList = [
-    const AddressEntity(
+  List<AddressModel> addressList = [
+    AddressModel(
         id: 1,
         addressName: "Masr Al Jadidah, Al Matar, El Nozha, Egypt",
         buildingNumber: "55",
@@ -35,7 +36,7 @@ void main() {
         latitude: 30.112314999999998832436176599003374576568603515625,
         longitude: 31.343850700000000841782821225933730602264404296875)
   ];
-  const addressEntity = AddressEntity(
+  final addressEntity = AddressEntity(
       id: 1,
       addressName: "Masr Al Jadidah, Al Matar, El Nozha, Egypt",
       buildingNumber: "55",
@@ -43,7 +44,14 @@ void main() {
       doorNumber: 5,
       latitude: 30.112314999999998832436176599003374576568603515625,
       longitude: 31.343850700000000841782821225933730602264404296875);
-
+  final addressModel = AddressModel(
+      id: 1,
+      addressName: "Masr Al Jadidah, Al Matar, El Nozha, Egypt",
+      buildingNumber: "55",
+      floorNumber: 5,
+      doorNumber: 5,
+      latitude: 30.112314999999998832436176599003374576568603515625,
+      longitude: 31.343850700000000841782821225933730602264404296875);
   // test('should check the device is online', () {
   //   //arrange
   //   when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
@@ -93,7 +101,7 @@ void main() {
       final result = await addressRepositoryImpl.getAddresses();
       //assert
       verify(() => mockRemoteDataSource.getAddresses());
-      expect(result, Left(EmptyCacheFailure()));
+      expect(result, Left(EmptyFailure()));
     });
   });
   group('check device is offline when get addresses', () {
@@ -120,12 +128,12 @@ void main() {
     test('should return unit when added address success', () async {
       //arrange
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
-      when(() => mockRemoteDataSource.addAddress(addressEntity))
+      when(() => mockRemoteDataSource.addAddress(addressModel))
           .thenAnswer((_) async => const Right(unit));
       //act
-      final result = await addressRepositoryImpl.addAddress(addressEntity);
+      final result = await addressRepositoryImpl.addAddress(addressModel);
       //assert
-      verify(() => mockRemoteDataSource.addAddress(addressEntity));
+      verify(() => mockRemoteDataSource.addAddress(addressModel));
       expect(result, const Right(unit));
     });
     test(
@@ -133,24 +141,24 @@ void main() {
         () async {
       //arrange
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
-      when(() => mockRemoteDataSource.addAddress(addressEntity))
+      when(() => mockRemoteDataSource.addAddress(addressModel))
           .thenThrow(NoInternetException());
       //act
-      final result = await addressRepositoryImpl.addAddress(addressEntity);
+      final result = await addressRepositoryImpl.addAddress(addressModel);
       //assert
-      verify(() => mockRemoteDataSource.addAddress(addressEntity));
+      verify(() => mockRemoteDataSource.addAddress(addressModel));
       expect(result, Left(NoInternetFailure()));
     });
     test('should return ServerException when fail to add new address',
         () async {
       //arrange
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
-      when(() => mockRemoteDataSource.addAddress(addressEntity))
+      when(() => mockRemoteDataSource.addAddress(addressModel))
           .thenThrow(ServerException());
       //act
-      final result = await addressRepositoryImpl.addAddress(addressEntity);
+      final result = await addressRepositoryImpl.addAddress(addressModel);
       //assert
-      verify(() => mockRemoteDataSource.addAddress(addressEntity));
+      verify(() => mockRemoteDataSource.addAddress(addressModel));
       expect(result, Left(ServerFailure()));
     });
   });
@@ -162,12 +170,12 @@ void main() {
         () async {
       //arrange
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => false);
-      when(() => mockRemoteDataSource.addAddress(addressEntity))
+      when(() => mockRemoteDataSource.addAddress(addressModel))
           .thenThrow(ServerException());
       //act
-      final result = await addressRepositoryImpl.addAddress(addressEntity);
+      final result = await addressRepositoryImpl.addAddress(addressModel);
       //assert
-      verify(() => mockRemoteDataSource.addAddress(addressEntity));
+      verify(() => mockRemoteDataSource.addAddress(addressModel));
       expect(result, Left(ServerFailure()));
     });
   });
@@ -178,23 +186,23 @@ void main() {
     test('should return unit when updated address success', () async {
       //arrange
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
-      when(() => mockRemoteDataSource.updateAddress(addressEntity))
+      when(() => mockRemoteDataSource.updateAddress(addressModel))
           .thenAnswer((_) async => const Right(unit));
       //act
-      final result = await addressRepositoryImpl.updateAddress(addressEntity);
+      final result = await addressRepositoryImpl.updateAddress(addressModel);
       //assert
-      verify(() => mockRemoteDataSource.updateAddress(addressEntity));
+      verify(() => mockRemoteDataSource.updateAddress(addressModel));
       expect(result, const Right(unit));
     });
     test('should return ServerException when fail to update address', () async {
       //arrange
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
-      when(() => mockRemoteDataSource.updateAddress(addressEntity))
+      when(() => mockRemoteDataSource.updateAddress(addressModel))
           .thenThrow(ServerException());
       //act
-      final result = await addressRepositoryImpl.updateAddress(addressEntity);
+      final result = await addressRepositoryImpl.updateAddress(addressModel);
       //assert
-      verify(() => mockRemoteDataSource.updateAddress(addressEntity));
+      verify(() => mockRemoteDataSource.updateAddress(addressModel));
       expect(result, Left(ServerFailure()));
     });
   });
@@ -205,12 +213,12 @@ void main() {
     test('should return ServerException when fail to update address', () async {
       //arrange
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
-      when(() => mockRemoteDataSource.updateAddress(addressEntity))
+      when(() => mockRemoteDataSource.updateAddress(addressModel))
           .thenThrow(ServerException());
       //act
-      final result = await addressRepositoryImpl.updateAddress(addressEntity);
+      final result = await addressRepositoryImpl.updateAddress(addressModel);
       //assert
-      verify(() => mockRemoteDataSource.updateAddress(addressEntity));
+      verify(() => mockRemoteDataSource.updateAddress(addressModel));
       expect(result, Left(ServerFailure()));
     });
   });

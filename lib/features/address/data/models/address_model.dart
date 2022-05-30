@@ -1,8 +1,8 @@
 import 'package:addresscrud_clean_architecture/features/address/domain/entities/address.dart';
 
 class AddressModel extends AddressEntity {
-  const AddressModel({
-    required int id,
+  AddressModel({
+    int? id,
     required String addressName,
     required String buildingNumber,
     required int floorNumber,
@@ -33,13 +33,23 @@ class AddressModel extends AddressEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      "id": 1,
-      "addressName": "address_name",
-      "buildingNumber": "building_number",
-      "floorNumber": 2,
-      "doorNumber": 3,
-      "latitude": 2222.5,
-      "longitude": 33333.5,
+      "id": id,
+      "address_name": addressName,
+      "building_no": buildingNumber,
+      "floor_no": floorNumber,
+      "door_no": doorNumber,
+      "latitude": latitude,
+      "longitude": longitude,
+    };
+  }
+  Map<String, dynamic> toJsonAdd() {
+    return {
+      "address_name": addressName,
+      "building_no": buildingNumber,
+      "floor_no": floorNumber,
+      "door_no": doorNumber,
+      "latitude": latitude,
+      "longitude": longitude,
     };
   }
 }

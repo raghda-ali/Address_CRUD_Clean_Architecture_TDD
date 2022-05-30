@@ -1,5 +1,5 @@
 import 'package:addresscrud_clean_architecture/core/usecases/usecase.dart';
-import 'package:addresscrud_clean_architecture/features/address/domain/entities/address.dart';
+import 'package:addresscrud_clean_architecture/features/address/data/models/address_model.dart';
 import 'package:addresscrud_clean_architecture/features/address/domain/repositories/address_repository.dart';
 import 'package:addresscrud_clean_architecture/features/address/domain/use_cases/get_addresses.dart';
 import 'package:dartz/dartz.dart';
@@ -15,8 +15,8 @@ void main() {
     mockAddressRepository = MockAddressRepository();
     getAddressUseCase = GetAddress(mockAddressRepository);
   });
-  List<AddressEntity> addressList = [
-    const AddressEntity(
+  List<AddressModel> addressList = [
+     AddressModel(
         id: 1,
         addressName: "Masr Al Jadidah, Al Matar, El Nozha, Egypt",
         buildingNumber: "55",
