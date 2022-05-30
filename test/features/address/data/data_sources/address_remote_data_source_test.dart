@@ -84,12 +84,12 @@ void main() {
   });
   group('add Address', () {
     final address =AddressModel(
-        addressName: "Masr Al Jadidah, Al Matar, El Nozha, Egypt",
-        buildingNumber: "55",
-        floorNumber: 5,
-        doorNumber: 5,
-        latitude: 30.112314999999998832436176599003374576568603515625,
-        longitude: 31.343850700000000841782821225933730602264404296875);
+        addressName: "haram street",
+        buildingNumber: "2A",
+        floorNumber: 3,
+        doorNumber: 10,
+        latitude: 31.0409,
+        longitude: 31.3785);
     test('should return unit when the response is 200(added successfully)',
         () async {
       //arrange
