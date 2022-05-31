@@ -39,19 +39,30 @@ class AddressRemoteDataSourceImpl implements AddressRemoteDataSource {
 
   @override
   Future<Either<Failure, Unit>> addAddress(AddressModel addressModel) async {
+    const url = "${AppStrings.baseUrl}add_address";
     const token =
         'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvdGEzYWxhcHAuY29tXC90YTNhbFwvQXBpXC9jdXN0b21lclwvbG9naW4iLCJpYXQiOjE2NDk4Mzc2ODIsImV4cCI6MjI0OTgzNzY4MiwibmJmIjoxNjQ5ODM3NjgyLCJqdGkiOiJlZE9WS1RzTHZiZXM3R1hVIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.g6I7XPoPimH_WMqzdtvatQDiVgCNyIpFCkVRORBDBZ4';
-    final response = await dio.post("${AppStrings.baseUrl}add_address",
-        data: FormData.fromMap(
-          addressModel.toJsonAdd(),
-        ),
+    final response = await dio.post(url,
+        // data: FormData.fromMap(
+        //   addressModel.toJsonAdd(),
+        // ),
+        data: {
+          "id": addressModel.id,
+          "address_name": addressModel.addressName,
+          "building_no": addressModel.buildingNumber,
+          "floor_no": addressModel.floorNumber,
+          "door_no": addressModel.doorNumber,
+          "longitude": addressModel.longitude,
+          "latitude": addressModel.latitude,
+        },
         options: Options(
           headers: {
-            "authorization": "Bearer$token",
+            "authorization": "Bearer $token",
           },
         ));
+    print(response.statusCode);
     if (response.statusCode == 200) {
-      return const Right(unit);
+      return Future.value(const Right(unit));
     } else {
       throw ServerException();
     }

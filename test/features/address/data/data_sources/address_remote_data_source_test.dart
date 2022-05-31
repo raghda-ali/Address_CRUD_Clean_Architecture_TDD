@@ -14,7 +14,7 @@ import 'package:dio/dio.dart' as dio;
 import '../../../../fixtures/fixture.reader.dart';
 
 class MockDio extends Mock implements dio.Dio {}
-
+class MockRemoteDataSource extends Mock implements AddressRemoteDataSourceImpl{}
 void main() {
   late MockDio mockDio;
   late AddressRemoteDataSourceImpl addressRemoteDataSource;
@@ -30,7 +30,7 @@ void main() {
         data: jsonDecode(fixture('address.json')) as Map<String, dynamic>,
         statusCode: 200,
         requestOptions: RequestOptions(
-          path: "${AppStrings.baseUrl}get_category",
+          path: "${AppStrings.baseUrl}get_address",
         ),
       ),
     ); //act
@@ -51,7 +51,7 @@ void main() {
   }
 
   final List<AddressEntity> addressList = [];
-  final jsonMap = jsonDecode(fixture('address.json')) as Map<String, dynamic>;
+  var jsonMap = jsonDecode(fixture('address.json')) as Map<String, dynamic>;
   for (int i = 0; i < (jsonMap['Addresses'] as List).length; i++) {
     addressList.add(
         AddressModel.fromJson(jsonMap['Addresses'][i] as Map<String, dynamic>));
@@ -83,7 +83,8 @@ void main() {
     });
   });
   group('add Address', () {
-    final address =AddressModel(
+    final address = AddressModel(
+        id: 1,
         addressName: "haram street",
         buildingNumber: "2A",
         floorNumber: 3,
@@ -93,11 +94,15 @@ void main() {
     test('should return unit when the response is 200(added successfully)',
         () async {
       //arrange
+      jsonMap = jsonDecode(fixture('addAddress.json')) as Map<String, dynamic>;
       when(() => mockDio.post(
             "${AppStrings.baseUrl}add_address",
+            data: address,
           )).thenAnswer(
-        (_) async =>  dio.Response(
+        (_) async => dio.Response(
+          data: jsonMap['Message'].toString(),
           statusCode: 200,
+
           requestOptions: RequestOptions(
             path: "${AppStrings.baseUrl}add_address",
           ),
@@ -106,18 +111,26 @@ void main() {
       final result = await addressRemoteDataSource.addAddress(address);
       print(result);
       //assert
-      verify(() => mockDio.post(
-            "${AppStrings.baseUrl}add_address",
-          ));
-      expect(result, const Right(unit));
+      verify(() =>
+          mockDio.post("${AppStrings.baseUrl}add_address", data: address));
+      expect(result, Right(unit));
     });
     // test('should return ServerException when the response is 404(fail)',
     //     () async {
     //   //arrange
-    //   setUpMockDioError404();
+    //   when(() => mockDio.post(
+    //         "${AppStrings.baseUrl}add_address",
+    //       )).thenAnswer(
+    //     (_) async => dio.Response(
+    //       statusCode: 404,
+    //       requestOptions: RequestOptions(
+    //         path: "${AppStrings.baseUrl}add_address",
+    //       ),
+    //     ),
+    //   );
     //   final result = addressRemoteDataSource.addAddress(address);
     //   //assert
-    //   verify(() => mockDio.get(
+    //   verify(() => mockDio.post(
     //         "${AppStrings.baseUrl}add_address",
     //       ));
     //   expect(result, throwsA(isInstanceOf<ServerException>()));
