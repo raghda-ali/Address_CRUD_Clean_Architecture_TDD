@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
           inputConverter: InputConverter()),
       child: MaterialApp(
         title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),

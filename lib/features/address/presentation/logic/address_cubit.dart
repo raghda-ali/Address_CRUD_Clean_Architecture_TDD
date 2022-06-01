@@ -30,6 +30,10 @@ class AddressCubit extends Cubit<AddressState> {
     required this.inputConverter,
   }) : super(AddressInitial());
 
+  AddressModel? addressModel;
+  void validate(){
+
+  }
   Future<void> getAddresses() async {
     emit(AddressLoading());
     final failureOrData = await getAddressUseCase.call(NoParams());

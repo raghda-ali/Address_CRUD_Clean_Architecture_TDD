@@ -97,7 +97,7 @@ void main() {
       jsonMap = jsonDecode(fixture('addAddress.json')) as Map<String, dynamic>;
       when(() => mockDio.post(
             "${AppStrings.baseUrl}add_address",
-            data: address,
+            data: address.toJson(),
           )).thenAnswer(
         (_) async => dio.Response(
           data: jsonMap['Message'].toString(),
@@ -112,7 +112,7 @@ void main() {
       print(result);
       //assert
       verify(() =>
-          mockDio.post("${AppStrings.baseUrl}add_address", data: address));
+          mockDio.post("${AppStrings.baseUrl}add_address", data: address.toJson()));
       expect(result, Right(unit));
     });
     // test('should return ServerException when the response is 404(fail)',
