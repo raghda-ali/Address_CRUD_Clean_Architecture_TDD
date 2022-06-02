@@ -14,7 +14,10 @@ import 'package:dio/dio.dart' as dio;
 import '../../../../fixtures/fixture.reader.dart';
 
 class MockDio extends Mock implements dio.Dio {}
-class MockRemoteDataSource extends Mock implements AddressRemoteDataSourceImpl{}
+
+class MockRemoteDataSource extends Mock implements AddressRemoteDataSourceImpl {
+}
+
 void main() {
   late MockDio mockDio;
   late AddressRemoteDataSourceImpl addressRemoteDataSource;
@@ -56,6 +59,14 @@ void main() {
     addressList.add(
         AddressModel.fromJson(jsonMap['Addresses'][i] as Map<String, dynamic>));
   }
+  final address = AddressModel(
+      id: 1,
+      addressName: "haram street",
+      buildingNumber: "2A",
+      floorNumber: 3,
+      doorNumber: 10,
+      latitude: 31.0409,
+      longitude: 31.3785);
   group('getAddresses', () {
     test('should return Address List when the response is 200(success)',
         () async {
@@ -83,14 +94,6 @@ void main() {
     });
   });
   group('add Address', () {
-    final address = AddressModel(
-        id: 1,
-        addressName: "haram street",
-        buildingNumber: "2A",
-        floorNumber: 3,
-        doorNumber: 10,
-        latitude: 31.0409,
-        longitude: 31.3785);
     test('should return unit when the response is 200(added successfully)',
         () async {
       //arrange
@@ -102,7 +105,6 @@ void main() {
         (_) async => dio.Response(
           data: jsonMap['Message'].toString(),
           statusCode: 200,
-
           requestOptions: RequestOptions(
             path: "${AppStrings.baseUrl}add_address",
           ),
@@ -111,29 +113,125 @@ void main() {
       final result = await addressRemoteDataSource.addAddress(address);
       print(result);
       //assert
-      verify(() =>
-          mockDio.post("${AppStrings.baseUrl}add_address", data: address.toJson()));
+      verify(() => mockDio.post("${AppStrings.baseUrl}add_address",
+          data: address.toJson()));
       expect(result, Right(unit));
     });
-    // test('should return ServerException when the response is 404(fail)',
-    //     () async {
-    //   //arrange
-    //   when(() => mockDio.post(
-    //         "${AppStrings.baseUrl}add_address",
-    //       )).thenAnswer(
-    //     (_) async => dio.Response(
-    //       statusCode: 404,
-    //       requestOptions: RequestOptions(
-    //         path: "${AppStrings.baseUrl}add_address",
-    //       ),
-    //     ),
-    //   );
-    //   final result = addressRemoteDataSource.addAddress(address);
-    //   //assert
-    //   verify(() => mockDio.post(
-    //         "${AppStrings.baseUrl}add_address",
-    //       ));
-    //   expect(result, throwsA(isInstanceOf<ServerException>()));
-    // });
+    test('should return ServerException when the response is 404(fail)',
+        () async {
+      //arrange
+      when(() => mockDio.post(
+            "${AppStrings.baseUrl}add_address",
+            data: address.toJson(),
+          )).thenAnswer(
+        (_) async => dio.Response(
+          statusCode: 404,
+          requestOptions: RequestOptions(
+            path: "${AppStrings.baseUrl}add_address",
+          ),
+        ),
+      );
+      final result = addressRemoteDataSource.addAddress(address);
+      //assert
+      verify(() => mockDio.post(
+            "${AppStrings.baseUrl}add_address",
+            data: address.toJson(),
+          ));
+      expect(result, throwsA(isInstanceOf<ServerException>()));
+    });
+  });
+
+  group('update Address', () {
+    test('should return unit when the response is 200(updated successfully)',
+        () async {
+      //arrange
+      // jsonMap = jsonDecode(fixture('addAddress.json')) as Map<String, dynamic>;
+      when(() => mockDio.post(
+            "${AppStrings.baseUrl}update_address",
+            data: address.toJson(),
+          )).thenAnswer(
+        (_) async => dio.Response(
+          // data: jsonMap['Message'].toString(),
+          statusCode: 200,
+          requestOptions: RequestOptions(
+            path: "${AppStrings.baseUrl}update_address",
+          ),
+        ),
+      );
+      final result = await addressRemoteDataSource.updateAddress(address);
+      print(result);
+      //assert
+      verify(() => mockDio.post("${AppStrings.baseUrl}update_address",
+          data: address.toJson()));
+      expect(result, Right(unit));
+    });
+    test('should return ServerException when the response is 404(fail)',
+        () async {
+      //arrange
+      when(() => mockDio.post(
+            "${AppStrings.baseUrl}update_address",
+            data: address.toJson(),
+          )).thenAnswer(
+        (_) async => dio.Response(
+          statusCode: 404,
+          requestOptions: RequestOptions(
+            path: "${AppStrings.baseUrl}update_address",
+          ),
+        ),
+      );
+      final result = addressRemoteDataSource.updateAddress(address);
+      //assert
+      verify(() => mockDio.post(
+            "${AppStrings.baseUrl}update_address",
+            data: address.toJson(),
+          ));
+      expect(result, throwsA(isInstanceOf<ServerException>()));
+    });
+  });
+  group('delete Address', () {
+    int addressId = 1;
+    test('should return unit when the response is 200(deleted successfully)',
+        () async {
+      //arrange
+      when(() => mockDio.post(
+            "${AppStrings.baseUrl}delete_address",
+            data: addressId,
+          )).thenAnswer(
+        (_) async => dio.Response(
+          statusCode: 200,
+          requestOptions: RequestOptions(
+            path: "${AppStrings.baseUrl}delete_address",
+          ),
+        ),
+      );
+      final result = await addressRemoteDataSource.deleteAddress(addressId);
+      print(result);
+      //assert
+      verify(() => mockDio.post("${AppStrings.baseUrl}delete_address",
+          data: addressId));
+      expect(result, Right(unit));
+    });
+    test('should return ServerException when the response is 404(fail)',
+        () async {
+      //arrange
+      when(() => mockDio.post(
+            "${AppStrings.baseUrl}delete_address",
+            data: addressId,
+          )).thenAnswer(
+        (_) async => dio.Response(
+          statusCode: 404,
+          requestOptions: RequestOptions(
+            path: "${AppStrings.baseUrl}delete_address",
+          ),
+        ),
+      );
+      final result = addressRemoteDataSource.deleteAddress(addressId);
+      //assert
+      verify(() => mockDio.post(
+            "${AppStrings.baseUrl}delete_address",
+            data: addressId,
+          ));
+      expect(result, throwsA(isInstanceOf<ServerException>()));
+    });
   });
 }
