@@ -1,5 +1,4 @@
 import 'package:addresscrud_clean_architecture/features/address/presentation/widgets/address_item.dart';
-import 'package:addresscrud_clean_architecture/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,6 +12,8 @@ class AddressesListView extends StatefulWidget {
 }
 
 class _AddressesListViewState extends State<AddressesListView> {
+  static final GlobalKey<FormState> addressKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AddressCubit, AddressState>(builder: (context, state) {

@@ -60,27 +60,6 @@ void main() {
       doorNumber: 5,
       latitude: 30.112314999999998832436176599003374576568603515625,
       longitude: 31.343850700000000841782821225933730602264404296875);
-  test('should call Input Converter to validate and convert the string to int',
-      () {
-    const strNumber = '1';
-    const numberIntParsed = 1;
-    when(() => inputConverter.stringToUnsignedInteger(any()))
-        .thenReturn(const Right(numberIntParsed));
-    final result = inputConverter.stringToUnsignedInteger(strNumber);
-    verify(() => inputConverter.stringToUnsignedInteger(strNumber));
-    expect(result, const Right(numberIntParsed));
-  });
-  test(
-      'should call Input Converter to validate and convert the string to double',
-      () {
-    const strNumber = '1.2';
-    const numberDoubleParsed = 1.2;
-    when(() => inputConverter.stringToDouble(any()))
-        .thenReturn(const Right(numberDoubleParsed));
-    final result = inputConverter.stringToDouble(strNumber);
-    verify(() => inputConverter.stringToDouble(strNumber));
-    expect(result, const Right(numberDoubleParsed));
-  });
   group('get addresses', () {
     test('should emit [Loading,success] when data is gotten successfully',
         () async {
@@ -146,8 +125,8 @@ void main() {
   group('Update address', () {
     test('should emit [Loading,success] when address updated successfully',
         () async {
-      when(() => mockUpdateAddresses.call(
-              UpdateAddressUseCaseParams(addressModel: addressModel)))
+      when(() => mockUpdateAddresses
+              .call(UpdateAddressUseCaseParams(addressModel: addressModel)))
           .thenAnswer((_) async => const Right(unit));
       final expected = [
         AddressLoading(),
@@ -157,8 +136,8 @@ void main() {
       await addressCubit.updateAddress(addressModel);
     });
     test('should emit [Loading,Error] when data is gotten Fail', () async {
-      when(() => mockUpdateAddresses.call(
-              UpdateAddressUseCaseParams(addressModel: addressModel)))
+      when(() => mockUpdateAddresses
+              .call(UpdateAddressUseCaseParams(addressModel: addressModel)))
           .thenAnswer((_) async => Left(ServerFailure()));
       final expected = [
         AddressLoading(),

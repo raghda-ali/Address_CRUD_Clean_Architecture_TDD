@@ -1,6 +1,7 @@
 import 'package:addresscrud_clean_architecture/core/error/failures.dart';
 import 'package:addresscrud_clean_architecture/core/usecases/usecase.dart';
 import 'package:addresscrud_clean_architecture/core/util/input_converter.dart';
+import 'package:addresscrud_clean_architecture/features/address/address_text_field_form.dart';
 import 'package:addresscrud_clean_architecture/features/address/data/models/address_model.dart';
 import 'package:addresscrud_clean_architecture/features/address/domain/use_cases/add_address.dart';
 import 'package:addresscrud_clean_architecture/features/address/domain/use_cases/delete_address.dart';
@@ -31,6 +32,7 @@ class AddressCubit extends Cubit<AddressState> {
   }) : super(AddressInitial());
 
   AddressModel? addressModel;
+  AddressTextFieldForm addressTextFieldForm = AddressTextFieldForm();
   void validate(){
 
   }

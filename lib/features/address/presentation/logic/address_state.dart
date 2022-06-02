@@ -48,3 +48,13 @@ class UpdateAddressSuccess extends AddressState {
   @override
   List<Object> get props => [];
 }
+
+class AddressValid extends AddressState {
+  @override
+  List<Object> get props => [];
+}
+
+class AddressInValid extends AddressState {
+  @override
+  List<Object> get props => [];
+}

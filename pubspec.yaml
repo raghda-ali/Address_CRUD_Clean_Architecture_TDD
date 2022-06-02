@@ -48,6 +48,8 @@ dependencies:
     # Local cache
   shared_preferences: ^2.0.13
   flutter_slidable: ^1.2.0
+  formz: ^0.4.1
+
 
 
 dev_dependencies:

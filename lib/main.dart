@@ -25,38 +25,39 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AddressCubit(
-          getAddressUseCase: GetAddress(AddressRepositoryImpl(
-            addressRemoteDataSource: AddressRemoteDataSourceImpl(dio: Dio()),
-            networkInfo:
-                NetworkInfoImpl(dataConnectionChecker: DataConnectionChecker()),
-          )),
-          addAddressUseCase: AddAddress(
-              addressRepository: AddressRepositoryImpl(
-            addressRemoteDataSource: AddressRemoteDataSourceImpl(dio: Dio()),
-            networkInfo:
-                NetworkInfoImpl(dataConnectionChecker: DataConnectionChecker()),
-          )),
-          updateAddressUseCase: UpdateAddress(
-              addressRepository: AddressRepositoryImpl(
-            addressRemoteDataSource: AddressRemoteDataSourceImpl(dio: Dio()),
-            networkInfo:
-                NetworkInfoImpl(dataConnectionChecker: DataConnectionChecker()),
-          )),
-          deleteAddressUseCase: DeleteAddress(AddressRepositoryImpl(
-              addressRemoteDataSource: AddressRemoteDataSourceImpl(dio: Dio()),
-              networkInfo: NetworkInfoImpl(
-                  dataConnectionChecker: DataConnectionChecker()))),
-          inputConverter: InputConverter()),
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const DisplayAddresses(),
+    return
+        // BlocProvider(
+        // create: (context) => AddressCubit(
+        //     getAddressUseCase: GetAddress(AddressRepositoryImpl(
+        //       addressRemoteDataSource: AddressRemoteDataSourceImpl(dio: Dio()),
+        //       networkInfo:
+        //           NetworkInfoImpl(dataConnectionChecker: DataConnectionChecker()),
+        //     )),
+        //     addAddressUseCase: AddAddress(
+        //         addressRepository: AddressRepositoryImpl(
+        //       addressRemoteDataSource: AddressRemoteDataSourceImpl(dio: Dio()),
+        //       networkInfo:
+        //           NetworkInfoImpl(dataConnectionChecker: DataConnectionChecker()),
+        //     )),
+        //     updateAddressUseCase: UpdateAddress(
+        //         addressRepository: AddressRepositoryImpl(
+        //       addressRemoteDataSource: AddressRemoteDataSourceImpl(dio: Dio()),
+        //       networkInfo:
+        //           NetworkInfoImpl(dataConnectionChecker: DataConnectionChecker()),
+        //     )),
+        //     deleteAddressUseCase: DeleteAddress(AddressRepositoryImpl(
+        //         addressRemoteDataSource: AddressRemoteDataSourceImpl(dio: Dio()),
+        //         networkInfo: NetworkInfoImpl(
+        //             dataConnectionChecker: DataConnectionChecker()))),
+        //     inputConverter: InputConverter()),
+        // child:
+        MaterialApp(
+      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      home: const DisplayAddresses(),
     );
   }
 }
