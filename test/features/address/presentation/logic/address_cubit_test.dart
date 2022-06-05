@@ -107,7 +107,7 @@ void main() {
         AddAddressSuccess(),
       ];
       expect(addressCubit.stream, emitsInOrder(expected));
-      await addressCubit.addAddress(addressModel);
+      await addressCubit.addAddress();
     });
     test('should emit [Loading,Error] when data is gotten Fail', () async {
       when(() => mockAddAddresses
@@ -119,7 +119,7 @@ void main() {
       ];
       expect(addressCubit.stream, emitsInOrder(expected));
 
-      await addressCubit.addAddress(addressModel);
+      await addressCubit.addAddress();
     });
   });
   group('Update address', () {
@@ -133,7 +133,7 @@ void main() {
         UpdateAddressSuccess(),
       ];
       expect(addressCubit.stream, emitsInOrder(expected));
-      await addressCubit.updateAddress(addressModel);
+      await addressCubit.updateAddress();
     });
     test('should emit [Loading,Error] when data is gotten Fail', () async {
       when(() => mockUpdateAddresses
@@ -145,7 +145,7 @@ void main() {
       ];
       expect(addressCubit.stream, emitsInOrder(expected));
 
-      await addressCubit.updateAddress(addressModel);
+      await addressCubit.updateAddress();
     });
   });
   group('Delete address', () {

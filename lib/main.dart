@@ -8,6 +8,8 @@ import 'package:addresscrud_clean_architecture/features/address/domain/use_cases
 import 'package:addresscrud_clean_architecture/features/address/domain/use_cases/get_addresses.dart';
 import 'package:addresscrud_clean_architecture/features/address/domain/use_cases/update_address.dart';
 import 'package:addresscrud_clean_architecture/features/address/presentation/logic/address_cubit.dart';
+import 'package:addresscrud_clean_architecture/features/address/presentation/pages/add_address.dart';
+import 'package:addresscrud_clean_architecture/injection_container.dart';
 import 'package:data_connection_checker_tv/data_connection_checker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -25,39 +27,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // BlocProvider(
-        // create: (context) => AddressCubit(
-        //     getAddressUseCase: GetAddress(AddressRepositoryImpl(
-        //       addressRemoteDataSource: AddressRemoteDataSourceImpl(dio: Dio()),
-        //       networkInfo:
-        //           NetworkInfoImpl(dataConnectionChecker: DataConnectionChecker()),
-        //     )),
-        //     addAddressUseCase: AddAddress(
-        //         addressRepository: AddressRepositoryImpl(
-        //       addressRemoteDataSource: AddressRemoteDataSourceImpl(dio: Dio()),
-        //       networkInfo:
-        //           NetworkInfoImpl(dataConnectionChecker: DataConnectionChecker()),
-        //     )),
-        //     updateAddressUseCase: UpdateAddress(
-        //         addressRepository: AddressRepositoryImpl(
-        //       addressRemoteDataSource: AddressRemoteDataSourceImpl(dio: Dio()),
-        //       networkInfo:
-        //           NetworkInfoImpl(dataConnectionChecker: DataConnectionChecker()),
-        //     )),
-        //     deleteAddressUseCase: DeleteAddress(AddressRepositoryImpl(
-        //         addressRemoteDataSource: AddressRemoteDataSourceImpl(dio: Dio()),
-        //         networkInfo: NetworkInfoImpl(
-        //             dataConnectionChecker: DataConnectionChecker()))),
-        //     inputConverter: InputConverter()),
-        // child:
-        MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return BlocProvider(
+      create:  (context) => sl<AddressCubit>()..getAddresses(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const DisplayAddresses(),
       ),
-      home: const DisplayAddresses(),
     );
   }
 }

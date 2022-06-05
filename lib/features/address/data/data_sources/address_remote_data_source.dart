@@ -26,9 +26,18 @@ class AddressRemoteDataSourceImpl implements AddressRemoteDataSource {
   @override
   Future<List<AddressModel>> getAddresses() async {
     List<AddressModel> addressList = [];
-
-    final response = await dio.get("${AppStrings.baseUrl}get_address");
+    const token =
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvdGEzYWxhcHAuY29tXC90YTNhbFwvQXBpXC9jdXN0b21lclwvbG9naW4iLCJpYXQiOjE2NTQwODYzNjksImV4cCI6MjI1NDA4NjM2OSwibmJmIjoxNjU0MDg2MzY5LCJqdGkiOiJIZ3M3ZjdKeEVxS2ZzWDM3Iiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.4FrmCy7qR320lJEhk0iLTt6d80axLKldYJzoGlUpfRY";
+    final response = await dio.get(
+      "${AppStrings.baseUrl}get_address",
+      options: Options(
+        headers: {
+          "authorization": "Bearer $token",
+        },
+      ),
+    );
     if (response.statusCode == 200) {
+      print(response.data);
       final jsonList = (response.data as Map<String, dynamic>)['Addresses'];
       for (final address in jsonList) {
         addressList.add(AddressModel.fromJson(address as Map<String, dynamic>));
@@ -63,11 +72,20 @@ class AddressRemoteDataSourceImpl implements AddressRemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, Unit>> deleteAddress(int id) async {
+  Future<Either<Failure, Unit>> deleteAddress(int addressId) async {
+    const token =
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvdGEzYWxhcHAuY29tXC90YTNhbFwvQXBpXC9jdXN0b21lclwvbG9naW4iLCJpYXQiOjE2NTQwODYzNjksImV4cCI6MjI1NDA4NjM2OSwibmJmIjoxNjU0MDg2MzY5LCJqdGkiOiJIZ3M3ZjdKeEVxS2ZzWDM3Iiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.4FrmCy7qR320lJEhk0iLTt6d80axLKldYJzoGlUpfRY";
     const url = "${AppStrings.baseUrl}delete_address";
     final response = await dio.post(
       url,
-      data: id,
+      data :FormData.fromMap({
+        "address_id": addressId,
+      }),
+      options: Options(
+        headers: {
+          "authorization": "Bearer $token",
+        },
+      ),
     );
     print(response.statusCode);
     if (response.statusCode == 200) {

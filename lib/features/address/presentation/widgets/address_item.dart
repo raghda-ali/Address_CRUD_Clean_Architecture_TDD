@@ -1,32 +1,33 @@
+import 'package:addresscrud_clean_architecture/features/address/presentation/logic/address_cubit.dart';
+import 'package:addresscrud_clean_architecture/features/address/presentation/pages/update_address.dart';
+import 'package:addresscrud_clean_architecture/features/address/presentation/widgets/custom_toast_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddressItem extends StatelessWidget {
   final String buildingNumber;
   final String addressName;
   final String floorNumber;
   final String doorNumber;
-  final bool? isSelected;
   final int? index;
-  final int? groupValue;
+  int? id;
 
-  const AddressItem({
+  AddressItem({
     Key? key,
     required this.buildingNumber,
     required this.addressName,
     required this.floorNumber,
     required this.doorNumber,
     this.index,
-    this.groupValue,
-    this.isSelected,
+    this.id,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final addressCubit = BlocProvider.of<AddressCubit>(context);
     return Container(
       width: double.infinity,
       height: 130,
-      // margin: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: const [
@@ -47,11 +48,12 @@ class AddressItem extends StatelessWidget {
                 children: [
                   Padding(
                     padding:
-                    const EdgeInsets.only(left: 10, top: 15, bottom: 5),
+                        const EdgeInsets.only(left: 10, top: 15, bottom: 5),
                     child: Row(
                       children: [
                         const Image(
-                          image: AssetImage('assets/images/Iconawesome-building.png'),
+                          image: AssetImage(
+                              'assets/images/Iconawesome-building.png'),
                         ),
                         const SizedBox(
                           width: 5,
@@ -80,6 +82,30 @@ class AddressItem extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const UpdateAddressScreen()),
+                      );
+                    },
+                    icon: Icon(
+                      Icons.edit,
+                      color: Colors.pink[300],
+                    )),
+                IconButton(
+                    onPressed: () {
+                      addressCubit.deleteAddress(id!);
+                    },
+                    icon: Icon(
+                      Icons.highlight_remove_rounded,
+                      color: Colors.pink[300],
+                    )),
+              ],
             ),
           ],
         ),

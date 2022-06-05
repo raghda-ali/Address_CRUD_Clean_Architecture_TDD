@@ -9,6 +9,8 @@ import 'package:addresscrud_clean_architecture/features/address/domain/use_cases
 import 'package:addresscrud_clean_architecture/features/address/domain/use_cases/update_address.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:formz/formz.dart';
 
 part 'address_state.dart';
 
@@ -33,9 +35,16 @@ class AddressCubit extends Cubit<AddressState> {
 
   AddressModel? addressModel;
   AddressTextFieldForm addressTextFieldForm = AddressTextFieldForm();
-  void validate(){
+  static final GlobalKey<FormState> key = GlobalKey<FormState>();
 
+  void validate() {
+    key.currentState!.save();
+    if (Formz.validate(addressTextFieldForm.inputs) == FormzStatus.valid) {
+      updateAddress();
+    }
+    emit(AddressInValid());
   }
+
   Future<void> getAddresses() async {
     emit(AddressLoading());
     final failureOrData = await getAddressUseCase.call(NoParams());
@@ -45,7 +54,8 @@ class AddressCubit extends Cubit<AddressState> {
     print(state.toString());
   }
 
-  Future<void> addAddress(AddressModel addressModel) async {
+  Future<void> addAddress() async {
+    final AddressModel addressModel = getAddressModel();
     emit(AddressLoading());
     final failureOrSuccess = await addAddressUseCase
         .call(AddAddressUseCaseParams(addressModel: addressModel));
@@ -56,7 +66,8 @@ class AddressCubit extends Cubit<AddressState> {
     print(state.toString());
   }
 
-  Future<void> updateAddress(AddressModel addressModel) async {
+  Future<void> updateAddress() async {
+    final AddressModel addressModel = getAddressModel();
     emit(AddressLoading());
     final failureOrSuccess = await updateAddressUseCase(
         UpdateAddressUseCaseParams(addressModel: addressModel));
@@ -75,6 +86,17 @@ class AddressCubit extends Cubit<AddressState> {
             emit(const AddressError(errorMessage: serveFailureMessage)),
         (success) => emit(const DeleteAddressSuccess()));
     print(state.toString());
+  }
+
+  AddressModel getAddressModel() {
+    return AddressModel(
+        id: 1,
+        addressName: "Masr Al Jadidah, Al Matar, El Nozha, Egypt",
+        buildingNumber: "55",
+        floorNumber: 5,
+        doorNumber: 5,
+        latitude: 30.112314999999998832436176599003374576568603515625,
+        longitude: 31.343850700000000841782821225933730602264404296875);
   }
 }
 

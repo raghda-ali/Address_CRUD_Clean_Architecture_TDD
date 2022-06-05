@@ -42,14 +42,4 @@ class AddressModel extends AddressEntity {
       "longitude": longitude,
     };
   }
-  Map<String, dynamic> toJsonAdd() {
-    return {
-      "address_name": addressName,
-      "building_no": buildingNumber,
-      "floor_no": floorNumber,
-      "door_no": doorNumber,
-      "latitude": latitude,
-      "longitude": longitude,
-    };
-  }
 }

@@ -49,6 +49,7 @@ dependencies:
   shared_preferences: ^2.0.13
   flutter_slidable: ^1.2.0
   formz: ^0.4.1
+  flutter_styled_toast: ^2.0.0
 
 
 
@@ -71,8 +72,8 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   uses-material-design: true
-#  assets:
-#    - assets/images/Iconawesome-building.png
+  assets:
+    - assets/images/
   # To add assets to your application, add an assets section, like this:
 
 
