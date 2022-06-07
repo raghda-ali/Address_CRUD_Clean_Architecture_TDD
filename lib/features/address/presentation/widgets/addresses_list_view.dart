@@ -14,9 +14,9 @@ class AddressesListView extends StatefulWidget {
 }
 
 class _AddressesListViewState extends State<AddressesListView> {
-
   @override
   Widget build(BuildContext context) {
+    final addressCubit = BlocProvider.of<AddressCubit>(context);
     return BlocConsumer<AddressCubit, AddressState>(
       listener: (context, state) {
         if (state is DeleteAddressSuccess) {
@@ -24,27 +24,29 @@ class _AddressesListViewState extends State<AddressesListView> {
         }
       },
       builder: (context, state) {
-        if (state is GetAddressSuccess) {
+        if (state is AddressLoading) {
+          return const Text("Loading...");
+        } else if (state is AddressError) {
+          return const Text("Error");
+        } else {
           return SingleChildScrollView(
             child: ListView.builder(
               shrinkWrap: true,
               primary: true,
               physics: const ClampingScrollPhysics(),
-              itemCount: state.addressModel.length,
+              itemCount: addressCubit.addressList.length,
               itemBuilder: (context, index) => AddressItem(
                 index: index,
-                id: state.addressModel[index].id,
-                doorNumber: state.addressModel[index].doorNumber.toString(),
-                floorNumber: state.addressModel[index].floorNumber.toString(),
-                buildingNumber: state.addressModel[index].buildingNumber,
-                addressName: state.addressModel[index].addressName,
+                id: addressCubit.addressList[index].id,
+                doorNumber:
+                    addressCubit.addressList[index].doorNumber.toString(),
+                floorNumber:
+                    addressCubit.addressList[index].floorNumber.toString(),
+                buildingNumber: addressCubit.addressList[index].buildingNumber,
+                addressName: addressCubit.addressList[index].addressName,
               ),
             ),
           );
-        } else if (state is AddressLoading) {
-          return const Text("Loading...");
-        } else {
-          return const Text("Error");
         }
       },
     );

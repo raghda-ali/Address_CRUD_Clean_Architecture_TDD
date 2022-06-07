@@ -97,11 +97,12 @@ void main() {
     });
   });
   group('Add address', () {
+    int addressId=1;
     test('should emit [Loading,success] when address added successfully',
         () async {
       when(() => mockAddAddresses
               .call(AddAddressUseCaseParams(addressModel: addressModel)))
-          .thenAnswer((_) async => const Right(unit));
+          .thenAnswer((_) async => Right(addressId));
       final expected = [
         AddressLoading(),
         AddAddressSuccess(),

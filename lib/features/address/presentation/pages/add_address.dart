@@ -9,8 +9,15 @@ import 'package:addresscrud_clean_architecture/features/address/presentation/wid
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AddAddressScreen extends StatelessWidget {
+class AddAddressScreen extends StatefulWidget {
   const AddAddressScreen({Key? key}) : super(key: key);
+
+  @override
+  State<AddAddressScreen> createState() => _AddAddressScreenState();
+}
+
+class _AddAddressScreenState extends State<AddAddressScreen> {
+  final GlobalKey<FormState> key = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +26,10 @@ class AddAddressScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Add Address"),
         centerTitle: true,
-        backgroundColor: Colors.deepOrangeAccent,
+        backgroundColor: Colors.grey,
       ),
       body: Form(
-        key: AddressCubit.key,
+        key: key,
         child: BlocConsumer<AddressCubit, AddressState>(
           listener: (context, state) {
             if (state is AddressError) {
@@ -31,6 +38,11 @@ class AddAddressScreen extends StatelessWidget {
               addressCubit.addAddress();
             } else if (state is AddAddressSuccess) {
               showToastBar(context, "Address Added Successfully");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const DisplayAddresses()),
+              );
             }
           },
           builder: (context, state) {
@@ -46,7 +58,7 @@ class AddAddressScreen extends StatelessWidget {
                             : null,
                     onSave: (v) {
                       addressCubit.addressTextFieldForm.placeNameField =
-                          const PlaceNameField.dirty();
+                          PlaceNameField.dirty(v!);
                     },
                   ),
                   const SizedBox(
@@ -60,7 +72,7 @@ class AddAddressScreen extends StatelessWidget {
                         : null,
                     onSave: (v) {
                       addressCubit.addressTextFieldForm.buildingNumberField =
-                          const BuildingNumberField.dirty();
+                          BuildingNumberField.dirty(v!);
                     },
                   ),
                   const SizedBox(
@@ -74,7 +86,7 @@ class AddAddressScreen extends StatelessWidget {
                         : null,
                     onSave: (v) {
                       addressCubit.addressTextFieldForm.floorNumberField =
-                          const FloorNumberField.dirty();
+                          FloorNumberField.dirty(v!);
                     },
                   ),
                   const SizedBox(
@@ -88,7 +100,7 @@ class AddAddressScreen extends StatelessWidget {
                         : null,
                     onSave: (v) {
                       addressCubit.addressTextFieldForm.doorNumberField =
-                          const DoorNumberField.dirty();
+                          DoorNumberField.dirty(v!);
                     },
                   ),
                   const SizedBox(
@@ -96,9 +108,11 @@ class AddAddressScreen extends StatelessWidget {
                   ),
                   RaisedButton(
                     onPressed: () {
+                      key.currentState!.save();
+
                       addressCubit.validate();
                     },
-                    color: Colors.deepOrangeAccent,
+                    color: Colors.grey,
                     child: const Text(
                       "Add Address",
                       style: TextStyle(
@@ -110,10 +124,11 @@ class AddAddressScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const DisplayAddresses()),
+                        MaterialPageRoute(
+                            builder: (context) => const DisplayAddresses()),
                       );
                     },
-                    color: Colors.deepOrangeAccent,
+                    color: Colors.grey,
                     child: const Text(
                       "Addresses",
                       style: TextStyle(

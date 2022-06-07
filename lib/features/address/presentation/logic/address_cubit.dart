@@ -35,12 +35,11 @@ class AddressCubit extends Cubit<AddressState> {
 
   AddressModel? addressModel;
   AddressTextFieldForm addressTextFieldForm = AddressTextFieldForm();
-  static final GlobalKey<FormState> key = GlobalKey<FormState>();
+  List<AddressModel> addressList = [];
 
   void validate() {
-    key.currentState!.save();
     if (Formz.validate(addressTextFieldForm.inputs) == FormzStatus.valid) {
-      updateAddress();
+      emit(AddressValid());
     }
     emit(AddressInValid());
   }
@@ -48,21 +47,29 @@ class AddressCubit extends Cubit<AddressState> {
   Future<void> getAddresses() async {
     emit(AddressLoading());
     final failureOrData = await getAddressUseCase.call(NoParams());
-    failureOrData.fold(
-        (failure) => emit(AddressError(errorMessage: message(failure))),
-        (data) => emit(GetAddressSuccess(addressModel: data)));
+
+    failureOrData
+        .fold((failure) => emit(AddressError(errorMessage: message(failure))),
+            (data) {
+      addressList = data;
+      emit(GetAddressSuccess(addressModel: data));
+    });
     print(state.toString());
   }
 
   Future<void> addAddress() async {
     final AddressModel addressModel = getAddressModel();
+    int addressId;
     emit(AddressLoading());
     final failureOrSuccess = await addAddressUseCase
         .call(AddAddressUseCaseParams(addressModel: addressModel));
     failureOrSuccess.fold(
         (failure) =>
             emit(const AddressError(errorMessage: serveFailureMessage)),
-        (success) => emit(AddAddressSuccess()));
+        (data) {
+      addressId = data;
+      emit(AddAddressSuccess());
+    });
     print(state.toString());
   }
 
@@ -98,8 +105,11 @@ class AddressCubit extends Cubit<AddressState> {
         latitude: 30.112314999999998832436176599003374576568603515625,
         longitude: 31.343850700000000841782821225933730602264404296875);
   }
+
+  void cleanInputs() {}
 }
 
+// extinction functions
 String message(Failure failure) {
   switch (failure.runtimeType) {
     case ServerFailure:

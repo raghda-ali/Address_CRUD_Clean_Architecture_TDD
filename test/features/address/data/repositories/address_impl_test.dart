@@ -122,19 +122,20 @@ void main() {
     });
   });
   group('check device is online to add addresses', () {
+    int addressId = 1;
     setUp(() {
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
     });
-    test('should return unit when added address success', () async {
+    test('should return address id when added address success', () async {
       //arrange
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
       when(() => mockRemoteDataSource.addAddress(addressModel))
-          .thenAnswer((_) async => const Right(unit));
+          .thenAnswer((_) async => Right(addressId));
       //act
       final result = await addressRepositoryImpl.addAddress(addressModel);
       //assert
       verify(() => mockRemoteDataSource.addAddress(addressModel));
-      expect(result, const Right(unit));
+      expect(result, Right(addressId));
     });
     test(
         'should return NoInternetException when no internet to add new address',

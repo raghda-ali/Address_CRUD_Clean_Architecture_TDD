@@ -5,13 +5,13 @@ import 'package:addresscrud_clean_architecture/features/address/domain/repositor
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-class AddAddress implements UseCase<Unit, AddAddressUseCaseParams> {
+class AddAddress implements UseCase<int, AddAddressUseCaseParams> {
   final AddressRepository addressRepository;
 
   AddAddress({required this.addressRepository});
 
   @override
-  Future<Either<Failure, Unit>> call(AddAddressUseCaseParams parameters) {
+  Future<Either<Failure, int>> call(AddAddressUseCaseParams parameters) {
     return addressRepository.addAddress(parameters.addressModel);
   }
 }

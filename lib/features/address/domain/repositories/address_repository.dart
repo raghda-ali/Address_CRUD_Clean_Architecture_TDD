@@ -5,7 +5,7 @@ import 'package:dartz/dartz.dart';
 abstract class AddressRepository {
   Future<Either<Failure, List<AddressModel>>> getAddresses();
 
-  Future<Either<Failure, Unit>> addAddress(AddressModel addressModel);
+  Future<Either<Failure, int>> addAddress(AddressModel addressModel);
 
   Future<Either<Failure, Unit>> updateAddress(AddressModel addressModel);
 

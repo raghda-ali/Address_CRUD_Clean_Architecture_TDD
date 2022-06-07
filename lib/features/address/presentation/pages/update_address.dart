@@ -8,20 +8,30 @@ import 'package:addresscrud_clean_architecture/features/address/presentation/wid
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class UpdateAddressScreen extends StatelessWidget {
+class UpdateAddressScreen extends StatefulWidget {
   const UpdateAddressScreen({Key? key}) : super(key: key);
+
+  @override
+  State<UpdateAddressScreen> createState() => _UpdateAddressScreenState();
+}
+
+class _UpdateAddressScreenState extends State<UpdateAddressScreen> {
+  final GlobalKey<FormState> key = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final addressCubit = BlocProvider.of<AddressCubit>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Update Address"),
+        title: const Text("Update Address",style: TextStyle(
+          color: Colors.black,
+        ),),
         centerTitle: true,
-        backgroundColor: Colors.pink[200],
+        backgroundColor: Colors.white,
+        elevation: 0,
       ),
       body: Form(
-        key: AddressCubit.key,
+        key: key,
         child: BlocConsumer<AddressCubit, AddressState>(
           listener: (context, state) {
             if (state is AddressError) {
@@ -45,7 +55,7 @@ class UpdateAddressScreen extends StatelessWidget {
                         : null,
                     onSave: (v) {
                       addressCubit.addressTextFieldForm.placeNameField =
-                      const PlaceNameField.dirty();
+                      PlaceNameField.dirty(v!);
                     },
                   ),
                   const SizedBox(
@@ -59,7 +69,7 @@ class UpdateAddressScreen extends StatelessWidget {
                         : null,
                     onSave: (v) {
                       addressCubit.addressTextFieldForm.buildingNumberField =
-                      const BuildingNumberField.dirty();
+                      BuildingNumberField.dirty(v!);
                     },
                   ),
                   const SizedBox(
@@ -73,7 +83,7 @@ class UpdateAddressScreen extends StatelessWidget {
                         : null,
                     onSave: (v) {
                       addressCubit.addressTextFieldForm.floorNumberField =
-                      const FloorNumberField.dirty();
+                      FloorNumberField.dirty(v!);
                     },
                   ),
                   const SizedBox(
@@ -87,7 +97,7 @@ class UpdateAddressScreen extends StatelessWidget {
                         : null,
                     onSave: (v) {
                       addressCubit.addressTextFieldForm.doorNumberField =
-                      const DoorNumberField.dirty();
+                       DoorNumberField.dirty(v!);
                     },
                   ),
                   const SizedBox(
@@ -95,6 +105,7 @@ class UpdateAddressScreen extends StatelessWidget {
                   ),
                   RaisedButton(
                     onPressed: () {
+                      key.currentState!.save();
                       addressCubit.validate();
                     },
                     color: Colors.pink[300],

@@ -22,15 +22,16 @@ void main() {
       doorNumber: 5,
       latitude: 30.112314999999998832436176599003374576568603515625,
       longitude: 31.343850700000000841782821225933730602264404296875);
+  int addressId = 1;
   test('should add address', () async {
     //arrange
     when(() => mockAddressRepository.addAddress(address))
-        .thenAnswer((_) async => const Right(unit));
+        .thenAnswer((_) async => Right(addressId));
     //act
     final result = await addAddressUseCase
         .call(AddAddressUseCaseParams(addressModel: address));
 
-    expect(result, const Right(unit));
+    expect(result, Right(addressId));
     //assert
     verify(() => mockAddressRepository.addAddress(address));
   });

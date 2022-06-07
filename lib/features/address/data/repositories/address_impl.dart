@@ -26,11 +26,11 @@ class AddressRepositoryImpl implements AddressRepository {
   }
 
   @override
-  Future<Either<Failure, Unit>> addAddress(AddressModel addressModel) async {
+  Future<Either<Failure, int>> addAddress(AddressModel addressModel) async {
     await networkInfo.isConnected;
     try {
       await addressRemoteDataSource.addAddress(addressModel);
-      return const Right(unit);
+      return  const Right(1);
     } on NoInternetException {
       return Left(NoInternetFailure());
     } on ServerException {
